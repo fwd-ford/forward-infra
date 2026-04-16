@@ -1,0 +1,18 @@
+services:
+  api:
+    build:
+      context: ../../forward-api
+      dockerfile: Dockerfile
+    container_name: forward-api
+    environment:
+      ENV: development
+      PORT: "8080"
+      LOG_LEVEL: info
+      DATABASE_URL: ${SUPABASE_DB_URL}
+      SUPABASE_JWKS_URL: ${SUPABASE_JWKS_URL}
+      ALLOWED_ORIGINS: http://localhost:3000,http://localhost:5173,http://localhost:8081,http://127.0.0.1:8081
+      RATE_LIMIT_MAX: "60"
+      RATE_LIMIT_WINDOW: 1m
+      MAX_BODY_BYTES: "1048576"
+    ports:
+      - "18080:8080"

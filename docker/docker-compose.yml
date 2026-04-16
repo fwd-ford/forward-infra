@@ -1,0 +1,43 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: forward-postgres
+    environment:
+      POSTGRES_USER: forward
+      POSTGRES_PASSWORD: forward_dev
+      POSTGRES_DB: forward
+    ports:
+      - "55432:5432"
+    volumes:
+      - forward-pgdata:/var/lib/postgresql/data
+      - ../supabase/migrations:/migrations:ro
+      - ../supabase/seed:/seed:ro
+      - ./init-db.sh:/docker-entrypoint-initdb.d/init-db.sh:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U forward -d forward"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  api:
+    build:
+      context: ../../forward-api
+      dockerfile: Dockerfile
+    container_name: forward-api
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      ENV: development
+      PORT: "8080"
+      LOG_LEVEL: info
+      DATABASE_URL: postgres://forward:forward_dev@postgres:5432/forward?sslmode=disable
+      ALLOWED_ORIGINS: http://localhost:3000,http://localhost:5173
+      RATE_LIMIT_MAX: "60"
+      RATE_LIMIT_WINDOW: 1m
+      MAX_BODY_BYTES: "1048576"
+    ports:
+      - "18080:8080"
+
+volumes:
+  forward-pgdata:
