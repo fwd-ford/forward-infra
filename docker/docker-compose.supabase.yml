@@ -1,15 +1,21 @@
 services:
   api:
     build:
-      context: ../../forward-api
+      context: ../../forward-api-java
       dockerfile: Dockerfile
-    container_name: forward-api
+    container_name: forward-api-java
     environment:
       ENV: development
       PORT: "8080"
-      LOG_LEVEL: info
-      DATABASE_URL: ${SUPABASE_DB_URL}
+      LOG_LEVEL: INFO
+      # Spring Boot uses JDBC URL (jdbc:postgresql://...), distinct from SUPABASE_DB_URL
+      # which is in libpq format (postgresql://...) and used by the psql migration runner.
+      # Spring Boot usa URL JDBC; SUPABASE_DB_URL (formato libpq) eh usada pelas migrations.
+      DATABASE_URL: ${SUPABASE_JDBC_URL}
+      DATABASE_USER: ${SUPABASE_DB_USER}
+      DATABASE_PASSWORD: ${SUPABASE_DB_PASSWORD}
       SUPABASE_JWKS_URL: ${SUPABASE_JWKS_URL}
+      INTERNAL_API_KEY: ${INTERNAL_API_KEY:-forward-internal-dev-key-2026}
       ALLOWED_ORIGINS: http://localhost:3000,http://localhost:5173,http://localhost:8081,http://127.0.0.1:8081
       RATE_LIMIT_MAX: "60"
       RATE_LIMIT_WINDOW: 1m

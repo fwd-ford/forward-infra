@@ -21,17 +21,19 @@ services:
 
   api:
     build:
-      context: ../../forward-api
+      context: ../../forward-api-java
       dockerfile: Dockerfile
-    container_name: forward-api
+    container_name: forward-api-java
     depends_on:
       postgres:
         condition: service_healthy
     environment:
       ENV: development
       PORT: "8080"
-      LOG_LEVEL: info
-      DATABASE_URL: postgres://forward:forward_dev@postgres:5432/forward?sslmode=disable
+      LOG_LEVEL: INFO
+      DATABASE_URL: jdbc:postgresql://postgres:5432/forward?sslmode=disable
+      DATABASE_USER: forward
+      DATABASE_PASSWORD: forward_dev
       ALLOWED_ORIGINS: http://localhost:3000,http://localhost:5173
       RATE_LIMIT_MAX: "60"
       RATE_LIMIT_WINDOW: 1m
