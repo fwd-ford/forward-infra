@@ -15,7 +15,7 @@ services:
       DATABASE_USER: ${SUPABASE_DB_USER}
       DATABASE_PASSWORD: ${SUPABASE_DB_PASSWORD}
       SUPABASE_JWKS_URL: ${SUPABASE_JWKS_URL}
-      INTERNAL_API_KEY: ${INTERNAL_API_KEY:-forward-internal-dev-key-2026}
+      INTERNAL_API_KEY: ${INTERNAL_API_KEY:?INTERNAL_API_KEY must be set}
       ALLOWED_ORIGINS: http://localhost:3000,http://localhost:5173,http://localhost:8081,http://127.0.0.1:8081
       RATE_LIMIT_MAX: "60"
       RATE_LIMIT_WINDOW: 1m
