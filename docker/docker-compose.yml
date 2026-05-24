@@ -30,6 +30,7 @@ services:
     environment:
       ENV: development
       PORT: "8080"
+      INTERNAL_API_KEY: ${INTERNAL_API_KEY}
       LOG_LEVEL: INFO
       DATABASE_URL: jdbc:postgresql://postgres:5432/forward?sslmode=disable
       DATABASE_USER: forward
@@ -38,6 +39,7 @@ services:
       RATE_LIMIT_MAX: "60"
       RATE_LIMIT_WINDOW: 1m
       MAX_BODY_BYTES: "1048576"
+      SUPABASE_JWKS_URL: ${SUPABASE_JWKS_URL:-}
     ports:
       - "18080:8080"
 
