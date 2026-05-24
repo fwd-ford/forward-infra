@@ -4,16 +4,22 @@
 -- originated the event (e.g. dealer_app, n8n, manual).
 
 ALTER TABLE service_orders
-    ADD COLUMN maintenance_number INTEGER NOT NULL DEFAULT 0,
-    ADD COLUMN main_source        TEXT    NOT NULL DEFAULT 'legacy';
+    ADD COLUMN IF NOT EXISTS maintenance_number INTEGER NOT NULL DEFAULT 0,
+    ADD COLUMN IF NOT EXISTS main_source        TEXT    NOT NULL DEFAULT 'legacy';
 
 ALTER TABLE service_orders
     ALTER COLUMN maintenance_number DROP DEFAULT,
     ALTER COLUMN main_source        DROP DEFAULT;
 
+ALTER TABLE service_orders DROP CONSTRAINT IF EXISTS service_orders_maintenance_number_non_negative;
 ALTER TABLE service_orders
     ADD CONSTRAINT service_orders_maintenance_number_non_negative
         CHECK (maintenance_number >= 0);
+
+ALTER TABLE service_orders DROP CONSTRAINT IF EXISTS service_orders_main_source_allowed;
+ALTER TABLE service_orders
+    ADD CONSTRAINT service_orders_main_source_allowed
+        CHECK (main_source IN ('dealer_app', 'n8n', 'manual', 'legacy'));
 
 CREATE INDEX IF NOT EXISTS idx_service_orders_main_source ON service_orders (main_source);
 
