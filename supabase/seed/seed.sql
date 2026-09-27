@@ -30,11 +30,11 @@ INSERT INTO vehicles (vin, customer_id, current_dealer_id, model, year, version,
     ('9BFZZZ5SZJB000004', '11111111-1111-1111-1111-111111111004', (SELECT id FROM dealers WHERE code = 'F0003'), 'Ranger',    2023, 'Limited', 'Azul',   FALSE, '2023-03-01', '2024-09-12 11:45:00-03'),
     ('9BFZZZ5SZJB000005', '11111111-1111-1111-1111-111111111005', (SELECT id FROM dealers WHERE code = 'F0004'), 'Territory', 2022, 'Titanium','Cinza',  FALSE, '2022-12-15', '2024-12-20 09:30:00-03');
 
-INSERT INTO service_orders (vin, dealer_id, order_type, status, scheduled_at, completed_at, mileage_km, total_amount_brl) VALUES
-    ('9BFZZZ5SZJB000001', (SELECT id FROM dealers WHERE code = 'F0001'), 'scheduled_maintenance', 'completed', '2022-06-10 14:00:00-03', '2022-06-10 14:30:00-03',  45000, 850.00),
-    ('9BFZZZ5SZJB000002', (SELECT id FROM dealers WHERE code = 'F0001'), 'scheduled_maintenance', 'completed', '2023-09-15 09:30:00-03', '2023-09-15 10:00:00-03',  38000, 920.00),
-    ('9BFZZZ5SZJB000004', (SELECT id FROM dealers WHERE code = 'F0003'), 'scheduled_maintenance', 'completed', '2024-09-12 11:15:00-03', '2024-09-12 11:45:00-03',  18000, 1250.00),
-    ('9BFZZZ5SZJB000005', (SELECT id FROM dealers WHERE code = 'F0004'), 'scheduled_maintenance', 'completed', '2024-12-20 09:00:00-03', '2024-12-20 09:30:00-03',  22000, 1100.00);
+INSERT INTO service_orders (vin, dealer_id, order_type, status, scheduled_at, completed_at, mileage_km, total_amount_brl, maintenance_number, main_source) VALUES
+    ('9BFZZZ5SZJB000001', (SELECT id FROM dealers WHERE code = 'F0001'), 'scheduled_maintenance', 'completed', '2022-06-10 14:00:00-03', '2022-06-10 14:30:00-03',  45000, 850.00, 3, 'legacy'),
+    ('9BFZZZ5SZJB000002', (SELECT id FROM dealers WHERE code = 'F0001'), 'scheduled_maintenance', 'completed', '2023-09-15 09:30:00-03', '2023-09-15 10:00:00-03',  38000, 920.00, 2, 'legacy'),
+    ('9BFZZZ5SZJB000004', (SELECT id FROM dealers WHERE code = 'F0003'), 'scheduled_maintenance', 'completed', '2024-09-12 11:15:00-03', '2024-09-12 11:45:00-03',  18000, 1250.00, 1, 'legacy'),
+    ('9BFZZZ5SZJB000005', (SELECT id FROM dealers WHERE code = 'F0004'), 'scheduled_maintenance', 'completed', '2024-12-20 09:00:00-03', '2024-12-20 09:30:00-03',  22000, 1100.00, 1, 'legacy');
 
 INSERT INTO churn_scores (customer_id, vin, model_version, segment, churn_probability, confidence, is_current) VALUES
     ('11111111-1111-1111-1111-111111111001', '9BFZZZ5SZJB000001', 'v0.1', 'esquecido', 0.78, 0.82, TRUE),
